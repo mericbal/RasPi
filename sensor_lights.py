@@ -1,5 +1,7 @@
 import RPi.GPIO as GPIO, time
 
+GPIO.cleanup()
+
 debug = 1
 GPIO.setmode(GPIO.BOARD)
 
@@ -25,12 +27,15 @@ def rc_time(pin):
 while True:
 	print rc_time(7)
 	
-	if rc_time(7) < 1000:
+	if rc_time(7) < 280:
 		GPIO.output(red, True)
 		GPIO.output(green, False)
-	elif rc_time(7) > 1000:
+	elif rc_time(7) > 281:
 		GPIO.output(red, False)
 		GPIO.output(green, True)
 	else:
 		GPIO.output(red, False)
 		GPIO.output(green, False)
+
+
+GPIO.cleanup()
