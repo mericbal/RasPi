@@ -21,16 +21,17 @@ def rc_time(pin):
 	GPIO.setup(pin, GPIO.IN)
 	
 	while (GPIO.input(pin) == GPIO.LOW):
-		reading += 1
-	return reading
+                reading += 0.1
+        return reading
 
 while True:
 	print rc_time(7)
+	print ' '
 	
-	if rc_time(7) < 280:
+	if rc_time(7) < 28.0:
 		GPIO.output(red, True)
 		GPIO.output(green, False)
-	elif rc_time(7) > 281:
+	elif rc_time(7) > 28.1:
 		GPIO.output(red, False)
 		GPIO.output(green, True)
 	else:
