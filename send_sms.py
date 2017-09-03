@@ -1,10 +1,13 @@
 from twilio.rest import Client
-from credentials import sid, token, my_cell, my_twilio
+from credentials import sid, token, meric, nil,  my_twilio
 
 client = Client(sid, token)
 
-msg = 'I am the Pie !'
+msg = 'I am the PIE !'
 
-message = client.messages.create(to=my_cell, from_=my_twilio, body=msg)
+message_to_nil = client.messages.create(to=nil, from_=my_twilio, body=msg)
+print 'Message sent to Nil !'
+message_to_meric = client.messages.create(to=meric, from_=my_twilio, body=msg) 
+print 'Message sent to Meric !'
 
-print 'Message sent !'
+print 'Messages sent to all users !'

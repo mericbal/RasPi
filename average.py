@@ -4,6 +4,9 @@ GPIO.setmode(GPIO.BOARD)
 
 pin = 7
 
+red = 11
+GPIO.setup(red, GPIO.OUT)
+
 def sensor(pin):
 	reading = 0
 	
@@ -18,13 +21,15 @@ def sensor(pin):
 	return reading
 
 total = 0
-counter = 60
+counter = 10
 
-for i in range(60):
+for i in range(counter):
 	counter -= 1
-	print 'running ... ' + str(counter)  
+	print 'running ... ' + str(counter) + ' ... ' 
+#	print str(sensor(pin))
+	GPIO.output(red, True)  
 	total += sensor(pin)
 
-print total / 60
+print 'Average --> ' + str(total/10)
 
 GPIO.cleanup()
