@@ -1,4 +1,11 @@
+# takes one arg to run
+# Ex 'python average.py 30'
+
+from sys import argv
 import RPi.GPIO as GPIO, time
+
+script,timer = argv
+print 'Sensor reading is going to take %r' % timer + ' seconds ...'
 
 GPIO.setmode(GPIO.BOARD)
 
@@ -20,8 +27,9 @@ def sensor(pin):
 		reading += 1
 	return reading
 
+
 total = 0
-counter = 10
+counter = int(timer)
 
 for i in range(counter):
 	counter -= 1
@@ -30,6 +38,7 @@ for i in range(counter):
 	GPIO.output(red, True)  
 	total += sensor(pin)
 
-print 'Average --> ' + str(total/10)
+
+print 'Average for %r seconds --> ' % timer  + str(total/int(timer))
 
 GPIO.cleanup()
