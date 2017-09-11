@@ -1,3 +1,6 @@
+# needs an argument to run
+# Exp 'python door_alarm.py 130' or 200
+
 from sys import argv
 import RPi.GPIO as GPIO
 import time
