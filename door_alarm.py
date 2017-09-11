@@ -1,8 +1,12 @@
+from sys import argv
 import RPi.GPIO as GPIO
 import time
 
 from twilio.rest import Client
 from credentials import sid, token, meric, nil,  my_twilio
+
+script,limit = argv
+print 'Alarm has been activated for %r ' % limit + ' LSR ...'
 
 client = Client(sid, token)
 warning = 'Door has opened!'
@@ -29,35 +33,38 @@ def sensor(pin):
 		reading += 1
 	return reading
 
-while True:
-	print sensor(7)
+try:
+	while True:
+		print sensor(7)
 	
-	if sensor(7) < 130:
-		print 'Movement detected !'
-		for i in range(10):
-			GPIO.output(red, True)
-			time.sleep(0.2)
-			GPIO.output(red, False)
-			GPIO.output(blue, True)
-			time.sleep(0.2)
-			GPIO.output(blue, False)
+		if sensor(7) < float(limit):
+			print 'Movement detected !'
+			for i in range(10):
+				GPIO.output(red, True)
+				time.sleep(0.2)
+				GPIO.output(red, False)
+				GPIO.output(blue, True)
+				time.sleep(0.2)
+				GPIO.output(blue, False)
 
-		if sensor(7) < 130:
-			GPIO.output(green, GPIO.HIGH)
-			time.sleep(2)
-			message = client.messages.create(to=meric,
+			if sensor(7) < float(limit):
+				GPIO.output(green, GPIO.HIGH)
+				time.sleep(2)
+				message = client.messages.create(to=meric,
 							from_=my_twilio,
 							body=warning)
-			print 'Message sent to %r !' % meric
-			message2 = client.messages.create(to=nil,
+				print 'Message sent to %r !' % meric
+				message2 = client.messages.create(to=nil,
 							from_=my_twilio,
 							body=warning)
-			print 'Message sent to %r !' % nil
-			print 'Returning to reading !'
-			GPIO.output(green, GPIO.LOW)
+				print 'Message sent to %r !' % nil
+				print 'Returning to reading !'
+				GPIO.output(green, GPIO.LOW)
 
-		else:
-			print 'Detection stopped ! Returning to reading !'
+			else:
+				print 'Detection stopped ! Returning to reading !'
 
-
-GPIO.cleanup()
+except KeyboardInterrupt:
+	pass
+finally:
+	GPIO.cleanup()
